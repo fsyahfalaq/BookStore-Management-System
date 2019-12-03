@@ -99,22 +99,50 @@ class JurnalController extends Controller
 
         switch ($request->referensi) {
             case '41':
-                $otomatisasiBiaya->no_transaksi = $request->no_transaksi+1;
-                $otomatisasiBiaya->referensi = 11;
-                $otomatisasiBiaya->tanggal = $tanggal;
-                $otomatisasiBiaya->uraian = "Kas";
-                $otomatisasiBiaya->debit = $request->sejumlah;
-                $otomatisasiBiaya->save();
+                //Menampung nilai pendapatan
+                $pendapatan = $request->sejumlah;
+
+                //Penentuan jenis pembayaran
+                // "0": Null
+                // "1": Tunai
+                // "2": Hutang
+                // "3": Piutang
+                if ($request->jenis_pembayaran = '3') {
+                    $kas = new Jurnal;
+                    $kas->no_transaksi = $request->no_transaksi;
+                    $kas->referensi = 11;
+                    $kas->tanggal = $tanggal;
+                    $kas->uraian = "Kas";
+                    $kas->debit = $request->sejumlah - $request->terbayar;
+                    $kas->save();
+                    
+                    $terbayar = new Jurnal;
+                    $terbayar->no_transaksi = $request->no_transaksi;
+                    $terbayar->referensi = 12;
+                    $terbayar->tanggal = $tanggal;
+                    $terbayar->uraian = "Piutang";
+                    $terbayar->debit = $request->terbayar;
+                    $terbayar->save();
+                } else {
+                    $otomatisasiBiaya->no_transaksi = $request->no_transaksi;
+                    $otomatisasiBiaya->referensi = 11;
+                    $otomatisasiBiaya->tanggal = $tanggal;
+                    $otomatisasiBiaya->uraian = "Kas";
+                    $otomatisasiBiaya->debit = $request->sejumlah;
+                    $otomatisasiBiaya->save();
+                }
+                
+                //Pencatatan jurnal kedalam pendapatan
                 $pendapatan = new Jurnal;
-                $pendapatan->no_transaksi = $request->no_transaksi+2;
+                $pendapatan->no_transaksi = $request->no_transaksi;
                 $pendapatan->referensi = 41;
                 $pendapatan->tanggal = $tanggal;
                 $pendapatan->uraian = "Pendapatan";
                 $pendapatan->kredit = $request->sejumlah;
                 $pendapatan->save();
-            break;
+                break;
             case '51':
-                $otomatisasiBiaya->no_transaksi = $request->no_transaksi+1;
+                $otomatisasiBiaya->no_transaksi = $request->no_transaksi;
                 $otomatisasiBiaya->referensi = 11;
                 $otomatisasiBiaya->tanggal = $tanggal;
                 $otomatisasiBiaya->uraian = "Kas";
@@ -122,7 +150,7 @@ class JurnalController extends Controller
                 $otomatisasiBiaya->save();
                 break;
             case '52':
-                $otomatisasiBiaya->no_transaksi = $request->no_transaksi+1;
+                $otomatisasiBiaya->no_transaksi = $request->no_transaksi;
                 $otomatisasiBiaya->referensi = 11;
                 $otomatisasiBiaya->tanggal = $tanggal;
                 $otomatisasiBiaya->uraian = "Kas";
@@ -130,7 +158,7 @@ class JurnalController extends Controller
                 $otomatisasiBiaya->save();
                 break;
             case '53':
-                $otomatisasiBiaya->no_transaksi = $request->no_transaksi+1;
+                $otomatisasiBiaya->no_transaksi = $request->no_transaksi;
                 $otomatisasiBiaya->referensi = 11;
                 $otomatisasiBiaya->tanggal = $tanggal;
                 $otomatisasiBiaya->uraian = "Kas";
@@ -138,7 +166,7 @@ class JurnalController extends Controller
                 $otomatisasiBiaya->save();
                 break;
             case '54':
-                $otomatisasiBiaya->no_transaksi = $request->no_transaksi+1;
+                $otomatisasiBiaya->no_transaksi = $request->no_transaksi;
                 $otomatisasiBiaya->referensi = 11;
                 $otomatisasiBiaya->tanggal = $tanggal;
                 $otomatisasiBiaya->uraian = "Kas";
@@ -146,7 +174,7 @@ class JurnalController extends Controller
                 $otomatisasiBiaya->save();
                 break;
             case '55':
-                $otomatisasiBiaya->no_transaksi = $request->no_transaksi+1;
+                $otomatisasiBiaya->no_transaksi = $request->no_transaksi;
                 $otomatisasiBiaya->referensi = 11;
                 $otomatisasiBiaya->tanggal = $tanggal;
                 $otomatisasiBiaya->uraian = "Kas";
@@ -154,7 +182,7 @@ class JurnalController extends Controller
                 $otomatisasiBiaya->save();
                 break;
             case '56':
-                $otomatisasiBiaya->no_transaksi = $request->no_transaksi+1;
+                $otomatisasiBiaya->no_transaksi = $request->no_transaksi;
                 $otomatisasiBiaya->referensi = 11;
                 $otomatisasiBiaya->tanggal = $tanggal;
                 $otomatisasiBiaya->uraian = "Kas";
@@ -162,7 +190,7 @@ class JurnalController extends Controller
                 $otomatisasiBiaya->save();
                 break;
             case '57':
-                $otomatisasiBiaya->no_transaksi = $request->no_transaksi+1;
+                $otomatisasiBiaya->no_transaksi = $request->no_transaksi;
                 $otomatisasiBiaya->referensi = 11;
                 $otomatisasiBiaya->tanggal = $tanggal;
                 $otomatisasiBiaya->uraian = "Kas";

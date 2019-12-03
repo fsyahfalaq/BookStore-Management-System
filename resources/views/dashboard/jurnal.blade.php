@@ -38,7 +38,7 @@
                 </div>
                 <div class="form-group">
                     <label>Referensi : </label>
-                    <select name="referensi" class="form-control" id="category" required>
+                    <select name="referensi" class="form-control" id="category">
                         <option value=''>Tidak ada</option>
                         @foreach ($no_akun as $referensi)
                         <option value="{{ $referensi->no_akun }}">{{ $referensi->no_akun }} {{ $referensi->nama_akun }}</option>
@@ -81,10 +81,11 @@
                     <input type="text" class="form-control" id="dengan-rupiah"/>
                     <input name="DP" type="hidden" class="form-control" id="tanparupiah"/>
                 </div>
-                <div class="form-group hide" id="terbayar">
+                <div class="form-group" id="terbayar">
                     <label>Terbayar   : </label>
-                    <input type="text" class="form-control" id="dengan-rupiah"/>
-                    <input name="terbayar" type="hidden" class="form-control" id="tanparupiah"/>
+                    <!-- bug -->
+                    <input name="terbayar" type="text" class="form-control" id="dengan-rupiah"/>
+                    <!-- <input name="terbayar" type="hidden" class="form-control" id="tanparupiah"/> -->
                 </div>
             </div>
             </div>
@@ -125,8 +126,8 @@
             {data: 'tanggal', name: 'tanggal'},
             {data: 'referensi', name: 'referensi'},
             {data: 'uraian', name: 'uraian'},
-            {data: 'debit', name: 'debit'},
-            {data: 'kredit', name: 'kredit'},
+            {data: 'debit', name: 'debit', render: $.fn.dataTable.render.number( ',', '.', 2 )},
+            {data: 'kredit', name: 'kredit', render: $.fn.dataTable.render.number( ',', '.', 2 )},
         ],
     });
 });
