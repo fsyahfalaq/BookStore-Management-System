@@ -72,9 +72,10 @@ class JurnalController extends Controller
 
         $record = new Jurnal;
         $record->no_transaksi = $request->no_transaksi;
-        $record->referensi = $request->referensi;
-        $record->tanggal   = $tanggal;
-        $record->uraian    = $request->uraian;
+        $record->referensi    = $request->referensi;
+        $record->tanggal      = $tanggal;
+        $record->uraian       = $request->uraian;
+        
         //penentuan debit kredit
         if ($request->jenis_transaksi == 1) {
             $record->debit     = $request->sejumlah;    
@@ -108,37 +109,42 @@ class JurnalController extends Controller
                 // "2": Hutang
                 // "3": Piutang
                 if ($request->jenis_pembayaran = '3') {
-                    $kas = new Jurnal;
-                    $kas->no_transaksi = $request->no_transaksi;
-                    $kas->referensi = 11;
-                    $kas->tanggal = $tanggal;
-                    $kas->uraian = "Kas";
-                    $kas->debit = $request->sejumlah - $request->terbayar;
-                    $kas->save();
+                    //Jika pendapatan yang didapat sepenuhnya bukan piutang 
+                    //(terdapat sejumlah uang yang sudah dibayarkan) 
+                    if ($request->terbayar != 0) {
+                        $kas = new Jurnal;
+                        $kas->no_transaksi  = $request->no_transaksi;
+                        $kas->referensi     = 11;
+                        $kas->tanggal       = $tanggal;
+                        $kas->uraian        = "Kas";
+                        $kas->debit         = $request->terbayar;
+                        $kas->save();
+                    }
                     
+                    //Pencatatan piutang
                     $terbayar = new Jurnal;
                     $terbayar->no_transaksi = $request->no_transaksi;
-                    $terbayar->referensi = 12;
-                    $terbayar->tanggal = $tanggal;
-                    $terbayar->uraian = "Piutang";
-                    $terbayar->debit = $request->terbayar;
+                    $terbayar->referensi    = 12;
+                    $terbayar->tanggal      = $tanggal;
+                    $terbayar->uraian       = "Piutang".$request->uraian;
+                    $terbayar->debit        = $request->sejumlah - $request->terbayar;
                     $terbayar->save();
-                } else {
+                } else {  //Pencatatan kas
                     $otomatisasiBiaya->no_transaksi = $request->no_transaksi;
-                    $otomatisasiBiaya->referensi = 11;
-                    $otomatisasiBiaya->tanggal = $tanggal;
-                    $otomatisasiBiaya->uraian = "Kas";
-                    $otomatisasiBiaya->debit = $request->sejumlah;
+                    $otomatisasiBiaya->referensi    = 11;
+                    $otomatisasiBiaya->tanggal      = $tanggal;
+                    $otomatisasiBiaya->uraian       = "Kas".$request->uraian;
+                    $otomatisasiBiaya->debit        = $request->sejumlah;
                     $otomatisasiBiaya->save();
                 }
                 
                 //Pencatatan jurnal kedalam pendapatan
                 $pendapatan = new Jurnal;
                 $pendapatan->no_transaksi = $request->no_transaksi;
-                $pendapatan->referensi = 41;
-                $pendapatan->tanggal = $tanggal;
-                $pendapatan->uraian = "Pendapatan";
-                $pendapatan->kredit = $request->sejumlah;
+                $pendapatan->referensi    = 41;
+                $pendapatan->tanggal      = $tanggal;
+                $pendapatan->uraian       = "Pendapatan ".$request->uraian;
+                $pendapatan->kredit       = $request->sejumlah;
                 $pendapatan->save();
                 break;
             case '51':
