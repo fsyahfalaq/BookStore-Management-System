@@ -149,7 +149,7 @@ class JurnalController extends Controller
                 break;
             case '51':
                 //Jika jenis pembayarannya hutang dan tidak sama sekali melakukan pembayaran
-                if (($request->jenis_pembayaran = '2') && ($request->terbayar == 0)) {
+                if (($request->jenis_pembayaran = '2') && ($request->DP == 0)) {
                     $hutang = new Jurnal;
                     $hutang->no_transaksi = $request->no_transaksi;
                     $hutang->referensi    = 21;
@@ -157,13 +157,13 @@ class JurnalController extends Controller
                     $hutang->uraian       = "Hutang ".$request->uraian;
                     $hutang->kredit       = $request->sejumlah;
                     $hutang->save();
-                } else if (($request->jenis_pembayaran = '2') && ($request->terbayar != 0)) {
+                } else if (($request->jenis_pembayaran = '2') && ($request->DP != 0)) {
                     $kas = new Jurnal;
                     $kas->no_transaksi  = $request->no_transaksi;
                     $kas->referensi     = 11;
                     $kas->tanggal       = $tanggal;
                     $kas->uraian        = "kas ".$request->uraian;
-                    $kas->kredit        = $request->terbayar;
+                    $kas->kredit        = $request->DP;
                     $kas->save();
 
                     $hutang = new Jurnal;
@@ -171,20 +171,20 @@ class JurnalController extends Controller
                     $hutang->referensi    = 21;
                     $hutang->tanggal      = $tanggal;
                     $hutang->uraian       = "Hutang ".$request->uraian;
-                    $hutang->kredit       = $request->sejumlah - $request->terbayar;
+                    $hutang->kredit       = $request->sejumlah - $request->DP;
                     $hutang->save();
                 } else {
                     $otomatisasiBiaya->no_transaksi = $request->no_transaksi;
-                    $otomatisasiBiaya->referensi = 11;
-                    $otomatisasiBiaya->tanggal = $tanggal;
-                    $otomatisasiBiaya->uraian = "Kas";
-                    $otomatisasiBiaya->kredit = $request->sejumlah;
+                    $otomatisasiBiaya->referensi    = 11;
+                    $otomatisasiBiaya->tanggal      = $tanggal;
+                    $otomatisasiBiaya->uraian       = "Kas";
+                    $otomatisasiBiaya->kredit       = $request->sejumlah;
                     $otomatisasiBiaya->save();
                 }
                 break;
             case '52':
                 //Jika jenis pembayarannya hutang dan tidak sama sekali melakukan pembayaran
-                if (($request->jenis_pembayaran = '2') && ($request->terbayar == 0)) {
+                if (($request->jenis_pembayaran = '2') && ($request->DP == 0)) {
                     $hutang = new Jurnal;
                     $hutang->no_transaksi = $request->no_transaksi;
                     $hutang->referensi    = 21;
@@ -192,13 +192,13 @@ class JurnalController extends Controller
                     $hutang->uraian       = "Hutang ".$request->uraian;
                     $hutang->kredit       = $request->sejumlah;
                     $hutang->save();
-                } else if (($request->jenis_pembayaran = '2') && ($request->terbayar != 0)) {
+                } else if (($request->jenis_pembayaran = '2') && ($request->DP != 0)) {
                     $kas = new Jurnal;
                     $kas->no_transaksi  = $request->no_transaksi;
                     $kas->referensi     = 11;
                     $kas->tanggal       = $tanggal;
                     $kas->uraian        = "kas ".$request->uraian;
-                    $kas->kredit        = $request->terbayar;
+                    $kas->kredit        = $request->DP;
                     $kas->save();
 
                     $hutang = new Jurnal;
@@ -206,20 +206,20 @@ class JurnalController extends Controller
                     $hutang->referensi    = 21;
                     $hutang->tanggal      = $tanggal;
                     $hutang->uraian       = "Hutang ".$request->uraian;
-                    $hutang->kredit       = $request->sejumlah - $request->terbayar;
+                    $hutang->kredit       = $request->sejumlah - $request->DP;
                     $hutang->save();
                 } else {
                     $otomatisasiBiaya->no_transaksi = $request->no_transaksi;
-                    $otomatisasiBiaya->referensi = 11;
-                    $otomatisasiBiaya->tanggal = $tanggal;
-                    $otomatisasiBiaya->uraian = "Kas";
-                    $otomatisasiBiaya->kredit = $request->sejumlah;
+                    $otomatisasiBiaya->referensi    = 11;
+                    $otomatisasiBiaya->tanggal      = $tanggal;
+                    $otomatisasiBiaya->uraian       = "Kas";
+                    $otomatisasiBiaya->kredit       = $request->sejumlah;
                     $otomatisasiBiaya->save();
                 }
                 break;
             case '53':
                 //Jika jenis pembayarannya hutang dan tidak sama sekali melakukan pembayaran
-                if (($request->jenis_pembayaran = '2') && ($request->terbayar == 0)) {
+                if (($request->jenis_pembayaran = '2') && ($request->DP == 0)) {
                     $hutang = new Jurnal;
                     $hutang->no_transaksi = $request->no_transaksi;
                     $hutang->referensi    = 21;
@@ -227,13 +227,13 @@ class JurnalController extends Controller
                     $hutang->uraian       = "Hutang ".$request->uraian;
                     $hutang->kredit       = $request->sejumlah;
                     $hutang->save();
-                } else if (($request->jenis_pembayaran = '2') && ($request->terbayar != 0)) {
+                } else if (($request->jenis_pembayaran = '2') && ($request->DP != 0)) {
                     $kas = new Jurnal;
                     $kas->no_transaksi  = $request->no_transaksi;
                     $kas->referensi     = 11;
                     $kas->tanggal       = $tanggal;
                     $kas->uraian        = "kas ".$request->uraian;
-                    $kas->kredit        = $request->terbayar;
+                    $kas->kredit        = $request->DP;
                     $kas->save();
 
                     $hutang = new Jurnal;
@@ -241,20 +241,20 @@ class JurnalController extends Controller
                     $hutang->referensi    = 21;
                     $hutang->tanggal      = $tanggal;
                     $hutang->uraian       = "Hutang ".$request->uraian;
-                    $hutang->kredit       = $request->sejumlah - $request->terbayar;
+                    $hutang->kredit       = $request->sejumlah - $request->DP;
                     $hutang->save();
                 } else {
                     $otomatisasiBiaya->no_transaksi = $request->no_transaksi;
-                    $otomatisasiBiaya->referensi = 11;
-                    $otomatisasiBiaya->tanggal = $tanggal;
-                    $otomatisasiBiaya->uraian = "Kas";
-                    $otomatisasiBiaya->kredit = $request->sejumlah;
+                    $otomatisasiBiaya->referensi    = 11;
+                    $otomatisasiBiaya->tanggal      = $tanggal;
+                    $otomatisasiBiaya->uraian       = "Kas";
+                    $otomatisasiBiaya->kredit       = $request->sejumlah;
                     $otomatisasiBiaya->save();
                 }
                 break;
             case '54':
                 //Jika jenis pembayarannya hutang dan tidak sama sekali melakukan pembayaran
-                if (($request->jenis_pembayaran = '2') && ($request->terbayar == 0)) {
+                if (($request->jenis_pembayaran = '2') && ($request->DP == 0)) {
                     $hutang = new Jurnal;
                     $hutang->no_transaksi = $request->no_transaksi;
                     $hutang->referensi    = 21;
@@ -262,13 +262,13 @@ class JurnalController extends Controller
                     $hutang->uraian       = "Hutang ".$request->uraian;
                     $hutang->kredit       = $request->sejumlah;
                     $hutang->save();
-                } else if (($request->jenis_pembayaran = '2') && ($request->terbayar != 0)) {
+                } else if (($request->jenis_pembayaran = '2') && ($request->DP != 0)) {
                     $kas = new Jurnal;
                     $kas->no_transaksi  = $request->no_transaksi;
                     $kas->referensi     = 11;
                     $kas->tanggal       = $tanggal;
                     $kas->uraian        = "kas ".$request->uraian;
-                    $kas->kredit        = $request->terbayar;
+                    $kas->kredit        = $request->DP;
                     $kas->save();
 
                     $hutang = new Jurnal;
@@ -276,20 +276,20 @@ class JurnalController extends Controller
                     $hutang->referensi    = 21;
                     $hutang->tanggal      = $tanggal;
                     $hutang->uraian       = "Hutang ".$request->uraian;
-                    $hutang->kredit       = $request->sejumlah - $request->terbayar;
+                    $hutang->kredit       = $request->sejumlah - $request->DP;
                     $hutang->save();
                 } else {
                     $otomatisasiBiaya->no_transaksi = $request->no_transaksi;
-                    $otomatisasiBiaya->referensi = 11;
-                    $otomatisasiBiaya->tanggal = $tanggal;
-                    $otomatisasiBiaya->uraian = "Kas";
-                    $otomatisasiBiaya->kredit = $request->sejumlah;
+                    $otomatisasiBiaya->referensi    = 11;
+                    $otomatisasiBiaya->tanggal      = $tanggal;
+                    $otomatisasiBiaya->uraian       = "Kas";
+                    $otomatisasiBiaya->kredit       = $request->sejumlah;
                     $otomatisasiBiaya->save();
                 }
                 break;
             case '55':
                 //Jika jenis pembayarannya hutang dan tidak sama sekali melakukan pembayaran
-                if (($request->jenis_pembayaran = '2') && ($request->terbayar == 0)) {
+                if (($request->jenis_pembayaran = '2') && ($request->DP == 0)) {
                     $hutang = new Jurnal;
                     $hutang->no_transaksi = $request->no_transaksi;
                     $hutang->referensi    = 21;
@@ -297,13 +297,13 @@ class JurnalController extends Controller
                     $hutang->uraian       = "Hutang ".$request->uraian;
                     $hutang->kredit       = $request->sejumlah;
                     $hutang->save();
-                } else if (($request->jenis_pembayaran = '2') && ($request->terbayar != 0)) {
+                } else if (($request->jenis_pembayaran = '2') && ($request->DP != 0)) {
                     $kas = new Jurnal;
                     $kas->no_transaksi  = $request->no_transaksi;
                     $kas->referensi     = 11;
                     $kas->tanggal       = $tanggal;
                     $kas->uraian        = "kas ".$request->uraian;
-                    $kas->kredit        = $request->terbayar;
+                    $kas->kredit        = $request->DP;
                     $kas->save();
 
                     $hutang = new Jurnal;
@@ -311,20 +311,20 @@ class JurnalController extends Controller
                     $hutang->referensi    = 21;
                     $hutang->tanggal      = $tanggal;
                     $hutang->uraian       = "Hutang ".$request->uraian;
-                    $hutang->kredit       = $request->sejumlah - $request->terbayar;
+                    $hutang->kredit       = $request->sejumlah - $request->DP;
                     $hutang->save();
                 } else {
                     $otomatisasiBiaya->no_transaksi = $request->no_transaksi;
-                    $otomatisasiBiaya->referensi = 11;
-                    $otomatisasiBiaya->tanggal = $tanggal;
-                    $otomatisasiBiaya->uraian = "Kas";
-                    $otomatisasiBiaya->kredit = $request->sejumlah;
+                    $otomatisasiBiaya->referensi    = 11;
+                    $otomatisasiBiaya->tanggal      = $tanggal;
+                    $otomatisasiBiaya->uraian       = "Kas";
+                    $otomatisasiBiaya->kredit       = $request->sejumlah;
                     $otomatisasiBiaya->save();
                 }
                 break;
             case '56':
                 //Jika jenis pembayarannya hutang dan tidak sama sekali melakukan pembayaran
-                if (($request->jenis_pembayaran = '2') && ($request->terbayar == 0)) {
+                if (($request->jenis_pembayaran = '2') && ($request->DP == 0)) {
                     $hutang = new Jurnal;
                     $hutang->no_transaksi = $request->no_transaksi;
                     $hutang->referensi    = 21;
@@ -332,13 +332,13 @@ class JurnalController extends Controller
                     $hutang->uraian       = "Hutang ".$request->uraian;
                     $hutang->kredit       = $request->sejumlah;
                     $hutang->save();
-                } else if (($request->jenis_pembayaran = '2') && ($request->terbayar != 0)) {
+                } else if (($request->jenis_pembayaran = '2') && ($request->DP != 0)) {
                     $kas = new Jurnal;
                     $kas->no_transaksi  = $request->no_transaksi;
                     $kas->referensi     = 11;
                     $kas->tanggal       = $tanggal;
                     $kas->uraian        = "kas ".$request->uraian;
-                    $kas->kredit        = $request->terbayar;
+                    $kas->kredit        = $request->DP;
                     $kas->save();
 
                     $hutang = new Jurnal;
@@ -346,20 +346,20 @@ class JurnalController extends Controller
                     $hutang->referensi    = 21;
                     $hutang->tanggal      = $tanggal;
                     $hutang->uraian       = "Hutang ".$request->uraian;
-                    $hutang->kredit       = $request->sejumlah - $request->terbayar;
+                    $hutang->kredit       = $request->sejumlah - $request->DP;
                     $hutang->save();
                 } else {
                     $otomatisasiBiaya->no_transaksi = $request->no_transaksi;
-                    $otomatisasiBiaya->referensi = 11;
-                    $otomatisasiBiaya->tanggal = $tanggal;
-                    $otomatisasiBiaya->uraian = "Kas";
-                    $otomatisasiBiaya->kredit = $request->sejumlah;
+                    $otomatisasiBiaya->referensi    = 11;
+                    $otomatisasiBiaya->tanggal      = $tanggal;
+                    $otomatisasiBiaya->uraian       = "Kas";
+                    $otomatisasiBiaya->kredit       = $request->sejumlah;
                     $otomatisasiBiaya->save();
                 }
                 break;
             case '57':
                 //Jika jenis pembayarannya hutang dan tidak sama sekali melakukan pembayaran
-                if (($request->jenis_pembayaran = '2') && ($request->terbayar == 0)) {
+                if (($request->jenis_pembayaran = '2') && ($request->DP == 0)) {
                     $hutang = new Jurnal;
                     $hutang->no_transaksi = $request->no_transaksi;
                     $hutang->referensi    = 21;
@@ -367,13 +367,13 @@ class JurnalController extends Controller
                     $hutang->uraian       = "Hutang ".$request->uraian;
                     $hutang->kredit       = $request->sejumlah;
                     $hutang->save();
-                } else if (($request->jenis_pembayaran = '2') && ($request->terbayar != 0)) {
+                } else if (($request->jenis_pembayaran = '2') && ($request->DP != 0)) {
                     $kas = new Jurnal;
                     $kas->no_transaksi  = $request->no_transaksi;
                     $kas->referensi     = 11;
                     $kas->tanggal       = $tanggal;
                     $kas->uraian        = "kas ".$request->uraian;
-                    $kas->kredit        = $request->terbayar;
+                    $kas->kredit        = $request->DP;
                     $kas->save();
 
                     $hutang = new Jurnal;
@@ -381,20 +381,20 @@ class JurnalController extends Controller
                     $hutang->referensi    = 21;
                     $hutang->tanggal      = $tanggal;
                     $hutang->uraian       = "Hutang ".$request->uraian;
-                    $hutang->kredit       = $request->sejumlah - $request->terbayar;
+                    $hutang->kredit       = $request->sejumlah - $request->DP;
                     $hutang->save();
                 } else {
                     $otomatisasiBiaya->no_transaksi = $request->no_transaksi;
-                    $otomatisasiBiaya->referensi = 11;
-                    $otomatisasiBiaya->tanggal = $tanggal;
-                    $otomatisasiBiaya->uraian = "Kas";
-                    $otomatisasiBiaya->kredit = $request->sejumlah;
+                    $otomatisasiBiaya->referensi    = 11;
+                    $otomatisasiBiaya->tanggal      = $tanggal;
+                    $otomatisasiBiaya->uraian       = "Kas";
+                    $otomatisasiBiaya->kredit       = $request->sejumlah;
                     $otomatisasiBiaya->save();
                 }
                 break;
             case '58':
                 //Jika jenis pembayarannya hutang dan tidak sama sekali melakukan pembayaran
-                if (($request->jenis_pembayaran = '2') && ($request->terbayar == 0)) {
+                if (($request->jenis_pembayaran = '2') && ($request->DP == 0)) {
                     $hutang = new Jurnal;
                     $hutang->no_transaksi = $request->no_transaksi;
                     $hutang->referensi    = 21;
@@ -402,13 +402,13 @@ class JurnalController extends Controller
                     $hutang->uraian       = "Hutang ".$request->uraian;
                     $hutang->kredit       = $request->sejumlah;
                     $hutang->save();
-                } else if (($request->jenis_pembayaran = '2') && ($request->terbayar != 0)) {
+                } else if (($request->jenis_pembayaran = '2') && ($request->DP != 0)) {
                     $kas = new Jurnal;
                     $kas->no_transaksi  = $request->no_transaksi;
                     $kas->referensi     = 11;
                     $kas->tanggal       = $tanggal;
                     $kas->uraian        = "kas ".$request->uraian;
-                    $kas->kredit        = $request->terbayar;
+                    $kas->kredit        = $request->DP;
                     $kas->save();
 
                     $hutang = new Jurnal;
@@ -416,14 +416,14 @@ class JurnalController extends Controller
                     $hutang->referensi    = 21;
                     $hutang->tanggal      = $tanggal;
                     $hutang->uraian       = "Hutang ".$request->uraian;
-                    $hutang->kredit       = $request->sejumlah - $request->terbayar;
+                    $hutang->kredit       = $request->sejumlah - $request->DP;
                     $hutang->save();
                 } else {
                     $otomatisasiBiaya->no_transaksi = $request->no_transaksi;
                     $otomatisasiBiaya->referensi = 11;
-                    $otomatisasiBiaya->tanggal = $tanggal;
-                    $otomatisasiBiaya->uraian = "Kas";
-                    $otomatisasiBiaya->kredit = $request->sejumlah;
+                    $otomatisasiBiaya->tanggal   = $tanggal;
+                    $otomatisasiBiaya->uraian    = "Kas";
+                    $otomatisasiBiaya->kredit    = $request->sejumlah;
                     $otomatisasiBiaya->save();
                 }
                 break;

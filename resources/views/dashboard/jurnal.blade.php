@@ -78,8 +78,9 @@
                 </div>
                 <div class="form-group hide" id="DP">
                     <label>DP   : </label>
-                    <input type="text" class="form-control" id="dengan-rupiah"/>
-                    <input name="DP" type="hidden" class="form-control" id="tanparupiah"/>
+                    <!-- bug -->
+                    <input name="DP" type="text" class="form-control" id="dengan-rupiah"/>
+                    <!-- <input name="DP" type="hidden" class="form-control" id="tanparupiah"/> -->
                 </div>
                 <div class="form-group" id="terbayar">
                     <label>Terbayar   : </label>
