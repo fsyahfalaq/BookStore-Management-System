@@ -89,19 +89,48 @@ class JurnalController extends Controller
 
         //Otomatisasi beban biaya
         $otomatisasiBiaya = new Jurnal;
-        // if ($request->referensi == 51) {
-        //     $otomatisasiBiaya->no_transaksi = $request->no_transaksi+1;
-        //     $otomatisasiBiaya->referensi = 11;
-        //     $otomatisasiBiaya->tanggal = $tanggal;
-        //     $otomatisasiBiaya->uraian = "Kas";
-        //     $otomatisasiBiaya->kredit = $request->sejumlah;
-        //     $otomatisasiBiaya->save();
-        // }
 
         switch ($request->referensi) {
+            //Peralatan
+            case '15':
+                //Jika jenis pembayarannya hutang dan tidak sama sekali melakukan pembayaran
+                if (($request->jenis_pembayaran = '2') && ($request->DP == 0)) {
+                    $hutang = new Jurnal;
+                    $hutang->no_transaksi = $request->no_transaksi;
+                    $hutang->referensi    = 21;
+                    $hutang->tanggal      = $tanggal;
+                    $hutang->uraian       = "Hutang ".$request->uraian;
+                    $hutang->kredit       = $request->sejumlah;
+                    $hutang->save();
+                } else if (($request->jenis_pembayaran = '2') && ($request->DP != 0)) {
+                    $kas = new Jurnal;
+                    $kas->no_transaksi  = $request->no_transaksi;
+                    $kas->referensi     = 11;
+                    $kas->tanggal       = $tanggal;
+                    $kas->uraian        = "kas ".$request->uraian;
+                    $kas->kredit        = $request->DP;
+                    $kas->save();
+
+                    $hutang = new Jurnal;
+                    $hutang->no_transaksi = $request->no_transaksi;
+                    $hutang->referensi    = 21;
+                    $hutang->tanggal      = $tanggal;
+                    $hutang->uraian       = "Hutang ".$request->uraian;
+                    $hutang->kredit       = $request->sejumlah - $request->DP;
+                    $hutang->save();
+                } else {
+                    $otomatisasiBiaya->no_transaksi = $request->no_transaksi;
+                    $otomatisasiBiaya->referensi    = 11;
+                    $otomatisasiBiaya->tanggal      = $tanggal;
+                    $otomatisasiBiaya->uraian       = "Kas";
+                    $otomatisasiBiaya->kredit       = $request->sejumlah;
+                    $otomatisasiBiaya->save();
+                }
+                break;
+            
+            //Pendapatan
             case '41':
                 //Menampung nilai pendapatan
-                $pendapatan = $request->sejumlah;
 
                 //Penentuan jenis pembayaran
                 // "0": Null
@@ -147,6 +176,8 @@ class JurnalController extends Controller
                 $pendapatan->kredit       = $request->sejumlah;
                 $pendapatan->save();
                 break;
+
+            //Beban Perlengkapan
             case '51':
                 //Jika jenis pembayarannya hutang dan tidak sama sekali melakukan pembayaran
                 if (($request->jenis_pembayaran = '2') && ($request->DP == 0)) {
@@ -182,6 +213,8 @@ class JurnalController extends Controller
                     $otomatisasiBiaya->save();
                 }
                 break;
+
+            //Beban Gaji    
             case '52':
                 //Jika jenis pembayarannya hutang dan tidak sama sekali melakukan pembayaran
                 if (($request->jenis_pembayaran = '2') && ($request->DP == 0)) {
@@ -217,6 +250,8 @@ class JurnalController extends Controller
                     $otomatisasiBiaya->save();
                 }
                 break;
+
+            //Beban sewa
             case '53':
                 //Jika jenis pembayarannya hutang dan tidak sama sekali melakukan pembayaran
                 if (($request->jenis_pembayaran = '2') && ($request->DP == 0)) {
@@ -252,6 +287,8 @@ class JurnalController extends Controller
                     $otomatisasiBiaya->save();
                 }
                 break;
+
+            //Beban listrik
             case '54':
                 //Jika jenis pembayarannya hutang dan tidak sama sekali melakukan pembayaran
                 if (($request->jenis_pembayaran = '2') && ($request->DP == 0)) {
@@ -287,6 +324,8 @@ class JurnalController extends Controller
                     $otomatisasiBiaya->save();
                 }
                 break;
+
+            //Beban telepon
             case '55':
                 //Jika jenis pembayarannya hutang dan tidak sama sekali melakukan pembayaran
                 if (($request->jenis_pembayaran = '2') && ($request->DP == 0)) {
@@ -322,6 +361,8 @@ class JurnalController extends Controller
                     $otomatisasiBiaya->save();
                 }
                 break;
+
+            //Beban Air
             case '56':
                 //Jika jenis pembayarannya hutang dan tidak sama sekali melakukan pembayaran
                 if (($request->jenis_pembayaran = '2') && ($request->DP == 0)) {
@@ -357,6 +398,8 @@ class JurnalController extends Controller
                     $otomatisasiBiaya->save();
                 }
                 break;
+
+            //Beban penyusutan
             case '57':
                 //Jika jenis pembayarannya hutang dan tidak sama sekali melakukan pembayaran
                 if (($request->jenis_pembayaran = '2') && ($request->DP == 0)) {
@@ -392,6 +435,8 @@ class JurnalController extends Controller
                     $otomatisasiBiaya->save();
                 }
                 break;
+
+            //Beban rupa - rupa
             case '58':
                 //Jika jenis pembayarannya hutang dan tidak sama sekali melakukan pembayaran
                 if (($request->jenis_pembayaran = '2') && ($request->DP == 0)) {
