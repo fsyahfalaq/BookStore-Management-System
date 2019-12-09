@@ -91,6 +91,42 @@ class JurnalController extends Controller
         $otomatisasiBiaya = new Jurnal;
 
         switch ($request->referensi) {
+            //Sewa dibayar dimuka
+            case '14':
+                //Jika jenis pembayarannya hutang dan tidak sama sekali melakukan pembayaran
+                if (($request->jenis_pembayaran = '2') && ($request->DP == 0)) {
+                    $hutang = new Jurnal;
+                    $hutang->no_transaksi = $request->no_transaksi;
+                    $hutang->referensi    = 21;
+                    $hutang->tanggal      = $tanggal;
+                    $hutang->uraian       = "Hutang ".$request->uraian;
+                    $hutang->kredit       = $request->sejumlah;
+                    $hutang->save();
+                } else if (($request->jenis_pembayaran = '2') && ($request->DP != 0)) {
+                    $kas = new Jurnal;
+                    $kas->no_transaksi  = $request->no_transaksi;
+                    $kas->referensi     = 11;
+                    $kas->tanggal       = $tanggal;
+                    $kas->uraian        = "kas ".$request->uraian;
+                    $kas->kredit        = $request->DP;
+                    $kas->save();
+                
+                    $hutang = new Jurnal;
+                    $hutang->no_transaksi = $request->no_transaksi;
+                    $hutang->referensi    = 21;
+                    $hutang->tanggal      = $tanggal;
+                    $hutang->uraian       = "Hutang ".$request->uraian;
+                    $hutang->kredit       = $request->sejumlah - $request->DP;
+                    $hutang->save();
+                } else {
+                    $otomatisasiBiaya->no_transaksi = $request->no_transaksi;
+                    $otomatisasiBiaya->referensi    = 11;
+                    $otomatisasiBiaya->tanggal      = $tanggal;
+                    $otomatisasiBiaya->uraian       = "Kas";
+                    $otomatisasiBiaya->kredit       = $request->sejumlah;
+                    $otomatisasiBiaya->save();
+                }
+                break;
             //Peralatan
             case '15':
                 //Jika jenis pembayarannya hutang dan tidak sama sekali melakukan pembayaran

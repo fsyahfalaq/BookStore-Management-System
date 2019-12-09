@@ -33,7 +33,7 @@ class CreateNoakunTable extends Migration
         'no_akun' => '13'
         ]);
         DB::table('noakun')->insert([
-        'nama_akun' => 'Sewa dibayar di muka',
+        'nama_akun' => 'Sewa dibayar dimuka',
         'no_akun' => '14'
         ]);
         DB::table('noakun')->insert([
