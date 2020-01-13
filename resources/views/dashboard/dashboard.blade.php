@@ -5,9 +5,9 @@
 
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="">
-  <meta name="author" content="">
+  <meta role="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta role="description" content="">
+  <meta role="author" content="">
 
   <title>Book Store</title>
 
@@ -47,48 +47,57 @@
       <hr class="sidebar-divider my-0">
 
       <!-- Nav Item - Dashboard -->
+      @if(Auth::user()->role === 'superadmin')
       <li class="nav-item">
-        <a class="nav-link" href="index.html">
+        <a class="nav-link" href="/dashboard">
           <i class="fas fa-fw fa-tachometer-alt"></i>
           <span>Dashboard</span></a>
       </li>
 
       <!-- Divider -->
       <hr class="sidebar-divider">
-
+      @endif
       <!-- Heading -->
-      <div class="sidebar-heading">
+      <!-- <div class="sidebar-heading">
         Interface
-      </div>
+      </div> -->
 
       <!-- Nav Item - Pages Collapse Menu -->
+      @if(Auth::user()->role === 'superadmin')
       <li class="nav-item">
-        <a class="nav-link" href="/dashboard/jurnal">
+        <a class="nav-link collapsed" href="/dashboard/jurnal">
             <i class="fas fa-table"></i>
             <span>Jurnal</span>
         </a>
       </li>
+      @endif
 
+      @if(Auth::user()->role === 'superadmin' || Auth::user()->role === 'logistik')
       <li class="nav-item">
         <a class="nav-link" href="/dashboard/logistik">
             <i class="fas fa-warehouse"></i>
             <span>Logistik</span>
         </a>
       </li>
+      @endif
 
+      @if(Auth::user()->role === 'superadmin' || Auth::user()->role === 'produksi')
       <li class="nav-item">
         <a class="nav-link" href="/dashboard/produksi">
             <i class="fas fa-boxes"></i>
             <span>Produksi</span>
         </a>
       </li>
+      @endif
 
+      @if(Auth::user()->role === 'superadmin' || Auth::user()->role === 'ekspedisi')
       <li class="nav-item">
         <a class="nav-link" href="/dashboard/ekspedisi">
             <i class="fas fa-truck"></i>
             <span>Ekspedisi</span>
         </a>
       </li>
+      @endif
 
       <li class="nav-item">
         <a class="nav-link" href="/dashboard/sdm">
@@ -98,10 +107,16 @@
       </li>
 
       <li class="nav-item">
-        <a class="nav-link" href="/dashboard/transpem">
+        <a class="nav-link collapsed" href="/dashboard/transpem" data-toggle="collapse" data-target="#keuanganCollapse" aria-expanded="true" aria-controls="keuanganCollapse">
             <i class="fas fa-wallet"></i>
             <span>Keuangan</span>
         </a>
+        <div id="keuanganCollapse" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar" aria-expanded="true">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <a class="collapse-item" href="/dashboard/keuangan/pengeluaran">Pengeluaran</a>
+            <a class="collapse-item" href="/dashboard/keuangan/pemasukan">Pemasukan</a>
+          </div>
+        </div>
       </li>
 
       <!-- Divider -->
@@ -136,7 +151,7 @@
             <!-- Nav Item - User Information -->
             <li class="nav-item dropdown no-arrow">
               <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Nama Admin</span>
+                <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ Auth::user()->name }} | {{ Auth::user()->role }}</span>
                 <i class="fas fa-user"></i>
               </a>
               <!-- Dropdown - User Information -->
@@ -154,7 +169,7 @@
                   Activity Log
                 </a>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                <a class="dropdown-item" href="{{ route('logout') }}" data-toggle="modal" data-target="#logoutModal">
                   <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                   Logout
                 </a>
@@ -212,7 +227,7 @@
         <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
         <div class="modal-footer">
           <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-          <a class="btn btn-primary" href="login.html">Logout</a>
+          <a class="btn btn-primary" href="{{ route('logout') }}">Logout</a>
         </div>
       </div>
     </div>

@@ -28,39 +28,43 @@
             <div class="col">
                 <div class="form-group">
                     <label>Nomor Induk Karyawan : </label>
-                    <input name="NIK" type="text" class="form-control"/>
+                    <input name="nik" type="text" class="form-control"/>
                 </div>
                 <div class="form-group">
                     <label>Nama Karyawan   : </label>
-                    <input name="namaKaryawan" type="text" class="form-control"/>
+                    <input name="nama_karyawan" type="text" class="form-control"/>
                 </div>
                 <div class="form-group">
                     <label>Alamat Karyawan  : </label>
-                    <input name="banyakBuku" type="text" class="form-control"/>
+                    <input name="alamat_karyawan" type="text" class="form-control"/>
                 </div>
                 <div class="form-group">
                     <label>No Telepon   : </label>
-                    <input name="noTelepon" type="text" class="form-control"/>
+                    <input name="no_telepon" type="text" class="form-control"/>
+                </div>
+                <div class="form-group">
+                    <label>Email   : </label>
+                    <input name="email" type="email" class="form-control"/>
                 </div>
             </div>
             <div class="col">
                 <div class="form-group">
                     <label>Divisi Pekerjaan  : </label>
-                    <select name="cabang_penerima" class="custom-select mr-sm-2" id="inlineFormCustomSelect">
-                        <option value="1">Logistik</option>
-                        <option value="2">Produksi</option>
-                        <option value="3">Ekspedisi</option>
-                        <option value="4">Keuangan</option>
+                    <select name="divisi_pekerjaan" class="custom-select mr-sm-2">
+                        <option value="logistik">Logistik</option>
+                        <option value="produksi">Produksi</option>
+                        <option value="ekspedisi">Ekspedisi</option>
+                        <option value="keuangan">Keuangan</option>
                     </select>
                 </div>
                 <div class="form-group">
                     <label>Gaji Karyawan : </label>
                     <input type="text" class="form-control" id="dengan-rupiah"/>
-                    <input name="gajiKaryawan" type="hidden" class="form-control" id="tanparupiah"/>
+                    <input name="gaji_karyawan" type="hidden" class="form-control" id="tanparupiah"/>
                 </div>
                 <div class="form-group">
                     <label>Tanggal Masuk   : </label>
-                    <input type="date" class="form-control" id="dengan-rupiah"/>
+                    <input name="tanggal_masuk" type="date" class="form-control" id="dengan-rupiah"/>
                 </div>
             </div>
             </div>
@@ -69,18 +73,23 @@
             </div>
     </form>
     
-
+    <!-- protected $fillable = [
+        "nik", "nama_karyawan", "alamat_karyawan", "no_telepon", "divisi_pekerjaan",
+        "gaji_karyawan", "tanggal_masuk"
+    ]; -->
     <div class="container">
         <table class="table table-striped table-bordered datatable">
             <thead>
                 <tr>
                     <th>id</th>
-                    <th>no_transaksi</th>
-                    <th>tanggal</th>
-                    <th>ref</th>
-                    <th>uraian</th>
-                    <th>debit</th>
-                    <th>kredit</th>
+                    <th>nik</th>
+                    <th>nama karyawan</th>
+                    <th>alamat karyawan</th>
+                    <th>tanggal masuk</th>
+                    <th>no telepon</th>
+                    <th>email</th>
+                    <th>divisi pekerjaan</th>
+                    <th>gaji karyawan</th>
                 </tr>
             </thead>
         </table>
@@ -94,15 +103,17 @@
     $(".datatable").DataTable({
         processing: true,
         serverSide: true,
-        ajax: '{{ route('datauser') }}',
+        ajax: '{{ route('dataKaryawan') }}',
         columns: [
             {data: 'id', name: 'id', visible: false},
-            {data: 'no_transaksi', name: 'no_transaksi'},
-            {data: 'tanggal', name: 'tanggal'},
-            {data: 'referensi', name: 'referensi'},
-            {data: 'uraian', name: 'uraian'},
-            {data: 'debit', name: 'debit'},
-            {data: 'kredit', name: 'kredit'},
+            {data: 'nik', name: 'nik'},
+            {data: 'nama_karyawan', name: 'nama_karyawan'},
+            {data: 'alamat_karyawan', name: 'alamat karyawan'},
+            {data: 'tanggal_masuk', name: 'tanggal_masuk'},
+            {data: 'no_telepon', name: 'no telepon'},
+            {data: 'email', name: 'email'},
+            {data: 'divisi_pekerjaan', name: 'divisi pekerjaan'},
+            {data: 'gaji_karyawan', name: 'gaji karyawan'},
         ],
     });
 });
@@ -120,7 +131,7 @@
         });
         var data = new FormData(document.getElementById("data-form"));
         $.ajax({
-                url: 'dashboard/jurnal',
+                url: 'dashboard/sdm',
                 method: "POST",
                 data: new FormData(document.getElementById("data-form")),
                 contentType: false,

@@ -28,35 +28,35 @@
             <div class="col">
                 <div class="form-group">
                     <label>Kode Buku : </label>
-                    <input name="kodeBuku" type="text" class="form-control"/>
+                    <input name="kode_buku" type="text" class="form-control"/>
                 </div>
                 <div class="form-group">
                     <label>Nama Buku   : </label>
-                    <input name="namaBuku" type="text" class="form-control"/>
+                    <input name="nama_buku" type="text" class="form-control"/>
                 </div>
                 <div class="form-group">
                     <label>Jumlah Buku   : </label>
-                    <input name="jumlahBuku" type="text" class="form-control"/>
+                    <input name="jumlah_buku" type="text" class="form-control"/>
                 </div>
             </div>
             <div class="col">
                 <div class="form-group">
                     <label>Berat Buku   : </label>
-                    <input name="beratBuku" type="text" class="form-control"/>
+                    <input name="berat_buku" type="text" class="form-control"/>
                 </div>
                 <div class="form-group">
                     <label>Harga Beli   : </label>
                     <input type="text" class="form-control" id="dengan-rupiah"/>
-                    <input name="hargaBeli" type="hidden" class="form-control" id="tanparupiah"/>
+                    <input name="harga_beli" type="hidden" class="form-control" id="tanparupiah"/>
                 </div>
                 <div class="form-group">
                     <label>Harga Jual  : </label>
                     <input type="text" class="form-control" id="dengan-rupiah"/>
-                    <input name="hargaJual" type="hidden" class="form-control" id="tanparupiah"/>
+                    <input name="harga_jual" type="hidden" class="form-control" id="tanparupiah"/>
                 </div>
                 <div class="form-group">
-                    <label>Tanggal Keluar   : </label>
-                    <input type="date" class="form-control" id="dengan-rupiah"/>
+                    <label>tanggal Keluar   : </label>
+                    <input name="tanggal_keluar" type="date" class="form-control" id="dengan-rupiah"/>
                 </div>
             </div>
             </div>
@@ -71,12 +71,12 @@
             <thead>
                 <tr>
                     <th>id</th>
-                    <th>no_transaksi</th>
-                    <th>tanggal</th>
-                    <th>ref</th>
-                    <th>uraian</th>
-                    <th>debit</th>
-                    <th>kredit</th>
+                    <th>kode buku</th>
+                    <th>berat buku</th>
+                    <th>jumlah buku</th>
+                    <th>harga beli</th>
+                    <th>harga jual</th>
+                    <th>tanggal keluar</th>
                 </tr>
             </thead>
         </table>
@@ -90,15 +90,15 @@
     $(".datatable").DataTable({
         processing: true,
         serverSide: true,
-        ajax: '{{ route('datauser') }}',
+        ajax: '{{ route('dataProduksi') }}',
         columns: [
             {data: 'id', name: 'id', visible: false},
-            {data: 'no_transaksi', name: 'no_transaksi'},
-            {data: 'tanggal', name: 'tanggal'},
-            {data: 'referensi', name: 'referensi'},
-            {data: 'uraian', name: 'uraian'},
-            {data: 'debit', name: 'debit'},
-            {data: 'kredit', name: 'kredit'},
+            {data: 'kode_buku', name: 'kode_buku'},
+            {data: 'berat_buku', name: 'berat_buku'},
+            {data: 'jumlah_buku', name: 'jumlah_buku'},
+            {data: 'harga_beli', name: 'harga_beli'},
+            {data: 'harga_jual', name: 'harga_jual'},
+            {data: 'tanggal_keluar', name: 'tanggal_keluar'},
         ],
     });
 });
@@ -116,7 +116,7 @@
         });
         var data = new FormData(document.getElementById("data-form"));
         $.ajax({
-                url: 'dashboard/jurnal',
+                url: 'dashboard/produksi',
                 method: "POST",
                 data: new FormData(document.getElementById("data-form")),
                 contentType: false,

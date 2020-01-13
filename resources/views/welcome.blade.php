@@ -36,7 +36,7 @@
           <hr class="divider my-4">
         </div>
         <div class="col-lg-8 align-self-baseline">
-          <p class="text-white-75 font-weight-light mb-5">Book Store can help you to make work more fun! Just login and stay rich!</p>
+          <p class="text-white-75 font-weight-light mb-5">Book Store can help you to make work more fun! Just login and stay cool!</p>
           <a class="btn btn-primary btn-xl js-scroll-trigger" href="/login">Login</a>
         </div>
       </div>

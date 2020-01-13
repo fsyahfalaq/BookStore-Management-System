@@ -16,7 +16,7 @@ class CreateJurnalTable extends Migration
         Schema::create('jurnal', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('referensi')->nullable();
-            $table->string('no_transaksi')->nullable();
+            $table->string('no_transaksi');
             $table->date('tanggal');
             $table->string('uraian');
             $table->bigInteger('debit')->nullable();

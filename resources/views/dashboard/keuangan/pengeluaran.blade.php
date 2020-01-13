@@ -2,6 +2,10 @@
 
 @section('content')
 
+@extends('dashboard.dashboard')
+
+@section('content')
+
 <style>
     .hide {
         display: none !important;
@@ -40,9 +44,7 @@
                     <label>Referensi : </label>
                     <select name="referensi" class="form-control" id="category">
                         <option value=''>Tidak ada</option>
-                        @foreach ($no_akun as $referensi)
-                        <option value="{{ $referensi->no_akun }}">{{ $referensi->no_akun }} {{ $referensi->nama_akun }}</option>
-                        @endforeach
+                        
                     </select>
                 </div>
                 <div class="form-group">
@@ -268,4 +270,6 @@ function showAdditonalTransaction() {
 
 </script>
 <!-- Input rupiah end -->
+@endsection
+
 @endsection

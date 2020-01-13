@@ -21,8 +21,13 @@ class JurnalController extends Controller
     public function index()
     {
         $no_akun = NoAkun::all();
+        $pendapatanBulan = Jurnal::select('debit')
+                            ->where('referensi', '=', '11')
+                            ->get();
+        $pendapatan = $pendapatanBulan->count();
         return view('dashboard.jurnal')
-            ->with('no_akun', $no_akun);
+            ->with('no_akun', $no_akun)
+            ->with('pendapatan', $pendapatan);
     }
 
     /**
@@ -32,14 +37,8 @@ class JurnalController extends Controller
      */
 
     public function dataUser() {
-        // $users = DB::table('jurnal')->select('id', 'name', 'email')->get();
-        
-        // return DataTables::of($users)
-        //         ->addIndexColumn()
-        //         ->make(true);
-
-        return DataTables::of(Jurnal::query())
-                    ->make(true);
+        return  DataTables::of(Jurnal::query())
+                        ->make(true);
     }
 
     public function create()
@@ -60,16 +59,13 @@ class JurnalController extends Controller
             'uraian'  => 'required',
             'tanggal' => 'required' 
         ];
-
+        
         $error = Validator::make($request->all(), $rules);
-
         if ($error->fails()) {
             return response()->json(['error' => $error->errors()->all()]);
         }
-        
         //convert form date to sql date format
         $tanggal = date("Y-m-d",strtotime($request->tanggal));
-
         $record = new Jurnal;
         $record->no_transaksi = $request->no_transaksi;
         $record->referensi    = $request->referensi;
@@ -94,15 +90,15 @@ class JurnalController extends Controller
             //Sewa dibayar dimuka
             case '14':
                 //Jika jenis pembayarannya hutang dan tidak sama sekali melakukan pembayaran
-                if (($request->jenis_pembayaran = '2') && ($request->DP == 0)) {
+                if (($request->metode_pembayaran === '2') && ($request->DP == 0)) {
                     $hutang = new Jurnal;
                     $hutang->no_transaksi = $request->no_transaksi;
                     $hutang->referensi    = 21;
                     $hutang->tanggal      = $tanggal;
                     $hutang->uraian       = "Hutang ".$request->uraian;
                     $hutang->kredit       = $request->sejumlah;
-                    $hutang->save();
-                } else if (($request->jenis_pembayaran = '2') && ($request->DP != 0)) {
+                    $hutang->save();    
+                } else if (($request->metode_pembayaran === '2') && ($request->DP != 0)) {
                     $kas = new Jurnal;
                     $kas->no_transaksi  = $request->no_transaksi;
                     $kas->referensi     = 11;
@@ -130,7 +126,7 @@ class JurnalController extends Controller
             //Peralatan
             case '15':
                 //Jika jenis pembayarannya hutang dan tidak sama sekali melakukan pembayaran
-                if (($request->jenis_pembayaran = '2') && ($request->DP == 0)) {
+                if (($request->metode_pembayaran === '2') && ($request->DP == 0)) {
                     $hutang = new Jurnal;
                     $hutang->no_transaksi = $request->no_transaksi;
                     $hutang->referensi    = 21;
@@ -138,7 +134,7 @@ class JurnalController extends Controller
                     $hutang->uraian       = "Hutang ".$request->uraian;
                     $hutang->kredit       = $request->sejumlah;
                     $hutang->save();
-                } else if (($request->jenis_pembayaran = '2') && ($request->DP != 0)) {
+                } else if (($request->metode_pembayaran === '2') && ($request->DP != 0)) {
                     $kas = new Jurnal;
                     $kas->no_transaksi  = $request->no_transaksi;
                     $kas->referensi     = 11;
@@ -173,7 +169,8 @@ class JurnalController extends Controller
                 // "1": Tunai
                 // "2": Hutang
                 // "3": Piutang
-                if ($request->jenis_pembayaran = '3') {
+                // return var_dump($request->metode_pembayaran);
+                if ($request->metode_pembayaran === "3") {
                     //Jika pendapatan yang didapat sepenuhnya bukan piutang 
                     //(terdapat sejumlah uang yang sudah dibayarkan) 
                     if ($request->terbayar != 0) {
@@ -181,7 +178,7 @@ class JurnalController extends Controller
                         $kas->no_transaksi  = $request->no_transaksi;
                         $kas->referensi     = 11;
                         $kas->tanggal       = $tanggal;
-                        $kas->uraian        = "Kas";
+                        $kas->uraian        = "Kas ";
                         $kas->debit         = $request->terbayar;
                         $kas->save();
                     }
@@ -191,14 +188,14 @@ class JurnalController extends Controller
                     $terbayar->no_transaksi = $request->no_transaksi;
                     $terbayar->referensi    = 12;
                     $terbayar->tanggal      = $tanggal;
-                    $terbayar->uraian       = "Piutang".$request->uraian;
+                    $terbayar->uraian       = "Piutang ".$request->uraian;
                     $terbayar->debit        = $request->sejumlah - $request->terbayar;
                     $terbayar->save();
                 } else {  //Pencatatan kas
                     $otomatisasiBiaya->no_transaksi = $request->no_transaksi;
                     $otomatisasiBiaya->referensi    = 11;
                     $otomatisasiBiaya->tanggal      = $tanggal;
-                    $otomatisasiBiaya->uraian       = "Kas".$request->uraian;
+                    $otomatisasiBiaya->uraian       = "Kas ".$request->uraian;
                     $otomatisasiBiaya->debit        = $request->sejumlah;
                     $otomatisasiBiaya->save();
                 }
@@ -212,19 +209,22 @@ class JurnalController extends Controller
                 $pendapatan->kredit       = $request->sejumlah;
                 $pendapatan->save();
                 break;
-
+                
             //Beban Perlengkapan
             case '51':
                 //Jika jenis pembayarannya hutang dan tidak sama sekali melakukan pembayaran
-                if (($request->jenis_pembayaran = '2') && ($request->DP == 0)) {
+                //Maka beban perlengkapan akan tercatat pada debit dan hutang pada kredit 
+                if (($request->metode_pembayaran === '2') && ($request->DP == 0)) {
                     $hutang = new Jurnal;
                     $hutang->no_transaksi = $request->no_transaksi;
                     $hutang->referensi    = 21;
                     $hutang->tanggal      = $tanggal;
                     $hutang->uraian       = "Hutang ".$request->uraian;
                     $hutang->kredit       = $request->sejumlah;
-                    $hutang->save();
-                } else if (($request->jenis_pembayaran = '2') && ($request->DP != 0)) {
+                    $hutang->save();                    
+                } else if (($request->metode_pembayaran === '2') && ($request->DP != 0)) {
+                //Jika jenis pembayarannya hutang dan membayar sejumlah DP
+                //Maka beban perlengkapan akan tercatat pada debit dan kas masuk   
                     $kas = new Jurnal;
                     $kas->no_transaksi  = $request->no_transaksi;
                     $kas->referensi     = 11;
@@ -253,7 +253,7 @@ class JurnalController extends Controller
             //Beban Gaji    
             case '52':
                 //Jika jenis pembayarannya hutang dan tidak sama sekali melakukan pembayaran
-                if (($request->jenis_pembayaran = '2') && ($request->DP == 0)) {
+                if (($request->metode_pembayaran === '2') && ($request->DP == 0)) {
                     $hutang = new Jurnal;
                     $hutang->no_transaksi = $request->no_transaksi;
                     $hutang->referensi    = 21;
@@ -261,7 +261,7 @@ class JurnalController extends Controller
                     $hutang->uraian       = "Hutang ".$request->uraian;
                     $hutang->kredit       = $request->sejumlah;
                     $hutang->save();
-                } else if (($request->jenis_pembayaran = '2') && ($request->DP != 0)) {
+                } else if (($request->metode_pembayaran === '2') && ($request->DP != 0)) {
                     $kas = new Jurnal;
                     $kas->no_transaksi  = $request->no_transaksi;
                     $kas->referensi     = 11;
@@ -290,7 +290,7 @@ class JurnalController extends Controller
             //Beban sewa
             case '53':
                 //Jika jenis pembayarannya hutang dan tidak sama sekali melakukan pembayaran
-                if (($request->jenis_pembayaran = '2') && ($request->DP == 0)) {
+                if (($request->metode_pembayaran === '2') && ($request->DP == 0)) {
                     $hutang = new Jurnal;
                     $hutang->no_transaksi = $request->no_transaksi;
                     $hutang->referensi    = 21;
@@ -298,7 +298,7 @@ class JurnalController extends Controller
                     $hutang->uraian       = "Hutang ".$request->uraian;
                     $hutang->kredit       = $request->sejumlah;
                     $hutang->save();
-                } else if (($request->jenis_pembayaran = '2') && ($request->DP != 0)) {
+                } else if (($request->metode_pembayaran === '2') && ($request->DP != 0)) {
                     $kas = new Jurnal;
                     $kas->no_transaksi  = $request->no_transaksi;
                     $kas->referensi     = 11;
@@ -318,7 +318,7 @@ class JurnalController extends Controller
                     $otomatisasiBiaya->no_transaksi = $request->no_transaksi;
                     $otomatisasiBiaya->referensi    = 11;
                     $otomatisasiBiaya->tanggal      = $tanggal;
-                    $otomatisasiBiaya->uraian       = "Kas";
+                    $otomatisasiBiaya->uraian       = "Kas ";
                     $otomatisasiBiaya->kredit       = $request->sejumlah;
                     $otomatisasiBiaya->save();
                 }
@@ -327,7 +327,7 @@ class JurnalController extends Controller
             //Beban listrik
             case '54':
                 //Jika jenis pembayarannya hutang dan tidak sama sekali melakukan pembayaran
-                if (($request->jenis_pembayaran = '2') && ($request->DP == 0)) {
+                if (($request->metode_pembayaran === '2') && ($request->DP == 0)) {
                     $hutang = new Jurnal;
                     $hutang->no_transaksi = $request->no_transaksi;
                     $hutang->referensi    = 21;
@@ -335,7 +335,7 @@ class JurnalController extends Controller
                     $hutang->uraian       = "Hutang ".$request->uraian;
                     $hutang->kredit       = $request->sejumlah;
                     $hutang->save();
-                } else if (($request->jenis_pembayaran = '2') && ($request->DP != 0)) {
+                } else if (($request->metode_pembayaran === '2') && ($request->DP != 0)) {
                     $kas = new Jurnal;
                     $kas->no_transaksi  = $request->no_transaksi;
                     $kas->referensi     = 11;
@@ -355,7 +355,7 @@ class JurnalController extends Controller
                     $otomatisasiBiaya->no_transaksi = $request->no_transaksi;
                     $otomatisasiBiaya->referensi    = 11;
                     $otomatisasiBiaya->tanggal      = $tanggal;
-                    $otomatisasiBiaya->uraian       = "Kas";
+                    $otomatisasiBiaya->uraian       = "Kas ";
                     $otomatisasiBiaya->kredit       = $request->sejumlah;
                     $otomatisasiBiaya->save();
                 }
@@ -364,7 +364,7 @@ class JurnalController extends Controller
             //Beban telepon
             case '55':
                 //Jika jenis pembayarannya hutang dan tidak sama sekali melakukan pembayaran
-                if (($request->jenis_pembayaran = '2') && ($request->DP == 0)) {
+                if (($request->metode_pembayaran === '2') && ($request->DP == 0)) {
                     $hutang = new Jurnal;
                     $hutang->no_transaksi = $request->no_transaksi;
                     $hutang->referensi    = 21;
@@ -372,7 +372,7 @@ class JurnalController extends Controller
                     $hutang->uraian       = "Hutang ".$request->uraian;
                     $hutang->kredit       = $request->sejumlah;
                     $hutang->save();
-                } else if (($request->jenis_pembayaran = '2') && ($request->DP != 0)) {
+                } else if (($request->metode_pembayaran === '2') && ($request->DP != 0)) {
                     $kas = new Jurnal;
                     $kas->no_transaksi  = $request->no_transaksi;
                     $kas->referensi     = 11;
@@ -401,7 +401,7 @@ class JurnalController extends Controller
             //Beban Air
             case '56':
                 //Jika jenis pembayarannya hutang dan tidak sama sekali melakukan pembayaran
-                if (($request->jenis_pembayaran = '2') && ($request->DP == 0)) {
+                if (($request->metode_pembayaran === '2') && ($request->DP == 0)) {
                     $hutang = new Jurnal;
                     $hutang->no_transaksi = $request->no_transaksi;
                     $hutang->referensi    = 21;
@@ -409,7 +409,7 @@ class JurnalController extends Controller
                     $hutang->uraian       = "Hutang ".$request->uraian;
                     $hutang->kredit       = $request->sejumlah;
                     $hutang->save();
-                } else if (($request->jenis_pembayaran = '2') && ($request->DP != 0)) {
+                } else if (($request->metode_pembayaran === '2') && ($request->DP != 0)) {
                     $kas = new Jurnal;
                     $kas->no_transaksi  = $request->no_transaksi;
                     $kas->referensi     = 11;
@@ -429,7 +429,7 @@ class JurnalController extends Controller
                     $otomatisasiBiaya->no_transaksi = $request->no_transaksi;
                     $otomatisasiBiaya->referensi    = 11;
                     $otomatisasiBiaya->tanggal      = $tanggal;
-                    $otomatisasiBiaya->uraian       = "Kas";
+                    $otomatisasiBiaya->uraian       = "Kas ";
                     $otomatisasiBiaya->kredit       = $request->sejumlah;
                     $otomatisasiBiaya->save();
                 }
@@ -438,7 +438,7 @@ class JurnalController extends Controller
             //Beban penyusutan
             case '57':
                 //Jika jenis pembayarannya hutang dan tidak sama sekali melakukan pembayaran
-                if (($request->jenis_pembayaran = '2') && ($request->DP == 0)) {
+                if (($request->metode_pembayaran === '2') && ($request->DP == 0)) {
                     $hutang = new Jurnal;
                     $hutang->no_transaksi = $request->no_transaksi;
                     $hutang->referensi    = 21;
@@ -446,7 +446,7 @@ class JurnalController extends Controller
                     $hutang->uraian       = "Hutang ".$request->uraian;
                     $hutang->kredit       = $request->sejumlah;
                     $hutang->save();
-                } else if (($request->jenis_pembayaran = '2') && ($request->DP != 0)) {
+                } else if (($request->metode_pembayaran === '2') && ($request->DP != 0)) {
                     $kas = new Jurnal;
                     $kas->no_transaksi  = $request->no_transaksi;
                     $kas->referensi     = 11;
@@ -466,7 +466,7 @@ class JurnalController extends Controller
                     $otomatisasiBiaya->no_transaksi = $request->no_transaksi;
                     $otomatisasiBiaya->referensi    = 11;
                     $otomatisasiBiaya->tanggal      = $tanggal;
-                    $otomatisasiBiaya->uraian       = "Kas";
+                    $otomatisasiBiaya->uraian       = "Kas ";
                     $otomatisasiBiaya->kredit       = $request->sejumlah;
                     $otomatisasiBiaya->save();
                 }
@@ -475,7 +475,7 @@ class JurnalController extends Controller
             //Beban rupa - rupa
             case '58':
                 //Jika jenis pembayarannya hutang dan tidak sama sekali melakukan pembayaran
-                if (($request->jenis_pembayaran = '2') && ($request->DP == 0)) {
+                if (($request->metode_pembayaran === '2') && ($request->DP == 0)) {
                     $hutang = new Jurnal;
                     $hutang->no_transaksi = $request->no_transaksi;
                     $hutang->referensi    = 21;
@@ -483,7 +483,7 @@ class JurnalController extends Controller
                     $hutang->uraian       = "Hutang ".$request->uraian;
                     $hutang->kredit       = $request->sejumlah;
                     $hutang->save();
-                } else if (($request->jenis_pembayaran = '2') && ($request->DP != 0)) {
+                } else if (($request->metode_pembayaran === '2') && ($request->DP != 0)) {
                     $kas = new Jurnal;
                     $kas->no_transaksi  = $request->no_transaksi;
                     $kas->referensi     = 11;
@@ -503,7 +503,7 @@ class JurnalController extends Controller
                     $otomatisasiBiaya->no_transaksi = $request->no_transaksi;
                     $otomatisasiBiaya->referensi = 11;
                     $otomatisasiBiaya->tanggal   = $tanggal;
-                    $otomatisasiBiaya->uraian    = "Kas";
+                    $otomatisasiBiaya->uraian    = "Kas ";
                     $otomatisasiBiaya->kredit    = $request->sejumlah;
                     $otomatisasiBiaya->save();
                 }

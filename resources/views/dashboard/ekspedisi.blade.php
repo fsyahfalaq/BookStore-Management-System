@@ -28,11 +28,11 @@
             <div class="col">
                 <div class="form-group">
                     <label>Kode Buku : </label>
-                    <input name="kodeBuku" type="text" class="form-control"/>
+                    <input name="kode_buku" type="text" class="form-control"/>
                 </div>
                 <div class="form-group">
                     <label>Nama Buku   : </label>
-                    <input name="namaBuku" type="text" class="form-control"/>
+                    <input name="nama_buku" type="text" class="form-control"/>
                 </div>
                 <div class="form-group">
                     <label>Cabang Penerima   : </label>
@@ -46,21 +46,21 @@
                 </div>
                 <div class="form-group">
                     <label>Alamat Cabang   : </label>
-                    <input name="alamatCabang" type="text" class="form-control"/>
+                    <input name="alamat_cabang" type="text" class="form-control"/>
                 </div>
             </div>
             <div class="col">
                 <div class="form-group">
                     <label>No Telepon  : </label>
-                    <input name="noTelepon" type="text" class="form-control"/>
+                    <input name="no_telp" type="text" class="form-control"/>
                 </div>
                 <div class="form-group">
-                    <label>Tanggal Penerima : </label>
-                    <input type="date" class="form-control" id="dengan-rupiah"/>
+                    <label>Tanggal Pengiriman : </label>
+                    <input name="tgl_pengiriman" type="date" class="form-control" id="dengan-rupiah"/>
                 </div>
                 <div class="form-group">
                     <label>Nama Kurir   : </label>
-                    <input name="namaKurir" type="text" class="form-control" id="dengan-rupiah"/>
+                    <input name="nama_kurir" type="text" class="form-control" id="dengan-rupiah"/>
                 </div>
             </div>
             </div>
@@ -75,12 +75,13 @@
             <thead>
                 <tr>
                     <th>id</th>
-                    <th>no_transaksi</th>
-                    <th>tanggal</th>
-                    <th>ref</th>
-                    <th>uraian</th>
-                    <th>debit</th>
-                    <th>kredit</th>
+                    <th>Kode buku</th>
+                    <th>Nama buku</th>
+                    <th>Cabang penerima</th>
+                    <th>Alamat cabang</th>
+                    <th>No. Telepon</th>
+                    <th>Tanggal pengiriman</th>
+                    <th>Nama kurir</th>
                 </tr>
             </thead>
         </table>
@@ -94,15 +95,16 @@
     $(".datatable").DataTable({
         processing: true,
         serverSide: true,
-        ajax: '{{ route('datauser') }}',
+        ajax: '{{ route('dataEkspedisi') }}',
         columns: [
             {data: 'id', name: 'id', visible: false},
-            {data: 'no_transaksi', name: 'no_transaksi'},
-            {data: 'tanggal', name: 'tanggal'},
-            {data: 'referensi', name: 'referensi'},
-            {data: 'uraian', name: 'uraian'},
-            {data: 'debit', name: 'debit'},
-            {data: 'kredit', name: 'kredit'},
+            {data: 'kode_buku', name: 'kode_buku'},
+            {data: 'nama_buku', name: 'nama_buku'},
+            {data: 'cabang_penerima', name: 'cabang_penerima'},
+            {data: 'alamat_cabang', name: 'alamat_cabang'},
+            {data: 'no_telp', name: 'no_telp'},
+            {data: 'tgl_pengiriman', name: 'tgl_pengiriman'},
+            {data: 'nama_kurir', name: 'nama_kurir'},
         ],
     });
 });
@@ -120,7 +122,7 @@
         });
         var data = new FormData(document.getElementById("data-form"));
         $.ajax({
-                url: 'dashboard/jurnal',
+                url: 'dashboard/ekspedisi',
                 method: "POST",
                 data: new FormData(document.getElementById("data-form")),
                 contentType: false,
