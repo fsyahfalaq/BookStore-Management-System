@@ -149,7 +149,7 @@
             {data: 'debit', name: 'debit', render: $.fn.dataTable.render.number( ',', '.', 2 )},
             {data: 'kredit', name: 'kredit', render: $.fn.dataTable.render.number( ',', '.', 2 )},
         ],
-        order: [[ 2, "desc" ]],
+        order: [[ 0, "desc" ]],
     });
     // $('#min').keyup( function() { table.draw(); } );
     // $('#max').keyup( function() { table.draw(); } );

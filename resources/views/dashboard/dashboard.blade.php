@@ -99,13 +99,16 @@
       </li>
       @endif
 
+      @if(Auth::user()->role === 'superadmin' || Auth::user()->role === 'sdm')
       <li class="nav-item">
         <a class="nav-link" href="/dashboard/sdm">
             <i class="fas fa-users"></i>
             <span>SDM</span>
         </a>
       </li>
+      @endif
 
+      @if(Auth::user()->role === 'superadmin' || Auth::user()->role === 'ekspedisi')
       <li class="nav-item">
         <a class="nav-link collapsed" href="/dashboard/transpem" data-toggle="collapse" data-target="#keuanganCollapse" aria-expanded="true" aria-controls="keuanganCollapse">
             <i class="fas fa-wallet"></i>
@@ -118,6 +121,7 @@
           </div>
         </div>
       </li>
+      @endif
 
       <!-- Divider -->
       <hr class="sidebar-divider d-none d-md-block">

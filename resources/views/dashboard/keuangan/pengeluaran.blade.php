@@ -2,17 +2,13 @@
 
 @section('content')
 
-@extends('dashboard.dashboard')
-
-@section('content')
-
 <style>
     .hide {
         display: none !important;
     }
 </style>
 
-<h2 my-2>Jurnal</h2>
+<h2 my-2>Pengeluaran</h2>
 
 @if(\Session::has('alert'))
 <br>
@@ -41,10 +37,12 @@
                     <input name="tanggal" type="date" class="form-control"/>
                 </div>
                 <div class="form-group">
-                    <label>Referensi : </label>
-                    <select name="referensi" class="form-control" id="category">
-                        <option value=''>Tidak ada</option>
-                        
+                    <label>Jenis Pengeluaran : </label>
+                    <select onchange="jenisPengeluaran()" name="jenis_pengeluaran" id="jenis_pengeluaran" class="form-control" id="jenis_pengeluaran">
+                        <option value='piutang'>Piutang</option>
+                        <option value='pembayaran_gaji'>Pembayaran Gaji</option>
+                        <option value='pembelian_peralatan'>Pembelian peralatan</option>
+                        <option value='pembelian_perlengkapan'>Pembelian perlengkapan</option>
                     </select>
                 </div>
                 <div class="form-group">
@@ -52,26 +50,19 @@
                     <input name="uraian" type="text" class="form-control"/>
                 </div>
                 <div class="form-group">
-                        <label>Metode Pembayaran   : </label>
-                        <select onchange="showAdditonalTransaction()" name="metode_pembayaran" class="custom-select mr-sm-2" id="metode_pembayaran">
-                            <option value="0"></option>
-                            <option value="1">Tunai</option>
-                            <option value="2">Hutang</option>
-                            <option value="3">Piutang</option>
-                        </select>
+                    <label>Metode Pembayaran   : </label>
+                    <select onchange="showAdditonalTransaction()" name="metode_pembayaran"class="custom-select mr-sm-2" id="metode_pembayaran">
+                        <option value="0"></option>
+                        <option value="1">Tunai</option>
+                        <option value="2">Hutang</option>
+                        <option value="3">Piutang</option>
+                    </select>
                 </div>
             </div>
             <div class="col">
                 <div class="form-group">
                     <label>No. Transaksi   : </label>
                     <input name="no_transaksi" type="text" class="form-control"/>
-                </div>
-                <div class="form-group">
-                        <label>Jenis Transaksi   : </label>
-                        <select name="jenis_transaksi" class="custom-select mr-sm-2" id="inlineFormCustomSelect">
-                            <option value="1">Debit</option>
-                            <option value="2">Kredit</option>
-                        </select>
                 </div>
                 <div class="form-group">
                     <label>Sejumlah   : </label>
@@ -84,7 +75,7 @@
                     <input name="DP" type="text" class="form-control" id="dengan-rupiah"/>
                     <!-- <input name="DP" type="hidden" class="form-control" id="tanparupiah"/> -->
                 </div>
-                <div class="form-group" id="terbayar">
+                <div class="form-group hide" id="terbayar">
                     <label>Terbayar   : </label>
                     <!-- bug -->
                     <input name="terbayar" type="text" class="form-control" id="dengan-rupiah"/>
@@ -241,7 +232,22 @@ $('#filter').click(function(){
 </script>
 
 <script>
-    
+
+
+// <input type="text" class="form-control" id="dengan-rupiah"/>
+//                     <input name="sejumlah" type="hidden" class="form-control" id="tanparupiah"/>
+
+function jenisPengeluaran() {
+    const jenis_pengeluaran = document.getElementById('jenis_pengeluaran');
+    const sejumlah = document.getElementById('dengan-rupiah');
+    const sejumlahHide = document.getElementById("tanparupiah")
+
+    if(jenis_pengeluaran.value === 'pembayaran_gaji'){
+        sejumlah.value = "{{ $gaji }}"
+        sejumlahHide.value = "{{ $gaji }}"
+    }
+}
+
 function showAdditonalTransaction() {
     const metode_pembayaran = document.getElementById('metode_pembayaran');
     const DP = document.getElementById('DP');
@@ -257,7 +263,7 @@ function showAdditonalTransaction() {
             DP.classList.add('hide')
             terbayar.classList.remove('hide')
         default:
-            console.log("test");
+            // terbayar.classList.add('hide')
             break;
     }
     // if (metode_pembayaran.value == 2) {
@@ -270,6 +276,5 @@ function showAdditonalTransaction() {
 
 </script>
 <!-- Input rupiah end -->
-@endsection
 
 @endsection

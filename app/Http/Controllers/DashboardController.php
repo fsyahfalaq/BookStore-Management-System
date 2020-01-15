@@ -85,6 +85,72 @@ class DashboardController extends Controller
                             ->where('referensi', '=', '57')
                             ->get();
         $bebanPenyusutan = $bebanPenyusutanBulan->sum('debit');
+        
+        //Mengambil kas untuk laporan
+        $debitKas = Jurnal::select('debit')
+                            ->where('referensi', '=', '11')
+                            ->get();
+        $totalDebitKas = $debitKas->sum('debit');
+        $kreditKas = Jurnal::select('kredit')
+                            ->where('referensi', '=', '11')
+                            ->get();
+        $totalKreditKas = $kreditKas->sum('kredit');
+        $laporanKas = $totalDebitKas - $totalKreditKas;
+        
+        //Mengambil piutang untuk laporan
+        $debitPiutang = Jurnal::select('debit')
+                            ->where('referensi', '=', '12')
+                            ->get();
+        $totalDebitPiutang = $debitPiutang->sum('debit');
+        $kreditPiutang = Jurnal::select('kredit')
+                            ->where('referensi', '=', '12')
+                            ->get();
+        $totalKreditPiutang = $kreditPiutang->sum('kredit');
+        $laporanPiutang = $totalDebitPiutang - $totalKreditPiutang;
+        
+        //Mengambil perlengkapan untuk laporan
+        $debitPerlengkapan = Jurnal::select('debit')
+                            ->where('referensi', '=', '13')
+                            ->get();
+        $totalDebitPerlengkapan = $debitPerlengkapan->sum('debit');
+        $kreditPerlengkapan = Jurnal::select('kredit')
+                            ->where('referensi', '=', '13')
+                            ->get();
+        $totalKreditPerlengkapan = $kreditPerlengkapan->sum('kredit');
+        $laporanPerelengkapan = $totalDebitPerlengkapan - $totalKreditPerlengkapan;
+        
+        //Mengambil sewa bayar dimuka untuk laporan
+        $debitSewa = Jurnal::select('debit')
+                            ->where('referensi', '=', '14')
+                            ->get();
+        $totalDebitSewa = $debitSewa->sum('debit');
+        $kreditSewa = Jurnal::select('kredit')
+                            ->where('referensi', '=', '14')
+                            ->get();
+        $totalKreditSewa = $kreditSewa->sum('kredit');
+        $laporanSewa = $totalDebitSewa - $totalKreditSewa;
+        
+        //Mengambil modal dimuka untuk laporan
+        $debitModal = Jurnal::select('debit')
+                            ->where('referensi', '=', '31')
+                            ->get();
+        $totalDebitModal = $debitModal->sum('debit');
+        $kreditModal = Jurnal::select('kredit')
+                            ->where('referensi', '=', '31')
+                            ->get();
+        $totalKreditModal = $kreditModal->sum('kredit');
+        $laporanModal = $totalDebitModal - $totalKreditModal;
+        
+        //Mengambil modal dimuka untuk laporan
+        $debitModal = Jurnal::select('debit')
+                            ->where('referensi', '=', '31')
+                            ->get();
+        $totalDebitModal = $debitModal->sum('debit');
+        $kreditModal = Jurnal::select('kredit')
+                            ->where('referensi', '=', '31')
+                            ->get();
+        $totalKreditModal = $kreditModal->sum('kredit');
+        $laporanModal = $totalDebitModal - $totalKreditModal;
 
         //Laba
         $laba = $pendapatan - $bebanPerlengkapan - $bebanGaji - $bebanSewa - $bebanListrik - $bebanTelepon - $bebanAir - $bebanPenyusutan;
@@ -99,6 +165,11 @@ class DashboardController extends Controller
             ->with('beban_telepon', rupiah($bebanTelepon))
             ->with('beban_air', rupiah($bebanAir))
             ->with('beban_penyusutan', rupiah($bebanPenyusutan))
-            ->with('laba', rupiah($laba));
+            ->with('laba', rupiah($laba))
+            ->with('laporan_kas', rupiah($laporanKas))
+            ->with('laporan_piutang', rupiah($laporanPiutang))
+            ->with('laporan_perlengkapan', rupiah($laporanPerelengkapan))
+            ->with('laporan_sewa', rupiah($laporanSewa))
+            ->with('laporan_modal', rupiah($laporanModal));
     }
 }
